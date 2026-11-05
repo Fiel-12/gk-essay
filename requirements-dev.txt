@@ -1,0 +1,2 @@
+# 仅开发/写文档时需要：用本机 Edge 自动采集 README 截图（scripts/shots.py）
+playwright>=1.40

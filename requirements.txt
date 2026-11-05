@@ -1,0 +1,5 @@
+# 运行依赖：只有这四个，其余全部用 Python 标准库（sqlite3/hashlib/hmac/zipfile/re/json…）
+fastapi>=0.110
+uvicorn>=0.27
+openai>=1.30
+python-dotenv>=1.0

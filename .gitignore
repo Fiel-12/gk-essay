@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 环境与密钥
+.env
+
+# 运行时生成的数据库
+data/app.db
+data/app.db-journal
+data/app.db-wal
+data/app.db-shm
+
+# 本地临时文件（截图脚本的临时目录等）
+.tmp/
+*.log
+
+# 系统杂项
+.DS_Store
+Thumbs.db

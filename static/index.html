@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高考满分作文智能应用</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-row">
+        <h1 id="app-title">高考满分作文智能应用</h1>
+        <span class="dot-live"></span>
+      </div>
+      <div class="badges">
+        <span class="pill pill-class">班级 <b id="meta-class">—</b></span>
+        <span class="pill pill-name">姓名 <b id="meta-name">—</b></span>
+        <span class="pill pill-id">学号 <b id="meta-id">—</b></span>
+      </div>
+    </div>
+
+    <div class="top-meta">
+      <span class="chip">模型 <b id="meta-model">—</b></span>
+      <span class="chip">范文库 <b id="meta-count">—</b> 条</span>
+    </div>
+
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-view="workbench">工作台</button>
+      <button class="tab" data-view="history">历史记录</button>
+      <button class="tab" data-view="prompts">提示词</button>
+    </nav>
+
+    <div class="userbox">
+      <span id="user-name" class="user-name">未登录</span>
+      <button id="auth-btn" class="btn btn-ghost">登录 / 注册</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= 工作台 ================= -->
+    <section id="view-workbench" class="view active">
+      <div class="workbench-grid">
+        <form id="gen-form" class="card form-card" autocomplete="off">
+          <h2 class="card-title">作文生成工作台</h2>
+          <label class="field">
+            <span>作文题目 <em>*</em></span>
+            <textarea id="topic" rows="3" placeholder="例如：以「守正与创新」为题，写一篇不少于 800 字的议论文"></textarea>
+          </label>
+          <label class="field">
+            <span>材料 / 引言</span>
+            <textarea id="material" rows="4" placeholder="可选：题目给出的材料、情境或引言"></textarea>
+          </label>
+          <label class="field">
+            <span>写作要求</span>
+            <input id="requirement" type="text" placeholder="可选：自选角度、自拟标题、不得套作等">
+          </label>
+          <div class="field-row">
+            <label class="field">
+              <span>文体</span>
+              <select id="genre">
+                <option>议论文</option>
+                <option>记叙文</option>
+                <option>散文</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>目标字数</span>
+              <select id="word-count">
+                <option value="800">800 字</option>
+                <option value="1000">1000 字</option>
+              </select>
+            </label>
+          </div>
+          <label class="field">
+            <span>立意角度数量 <b id="angle-val" class="accent">3</b></span>
+            <input id="angle-count" type="range" min="1" max="3" step="1" value="3">
+          </label>
+          <label class="check">
+            <input id="do-critique" type="checkbox" checked>
+            <span>开启「审题 → 提纲 → 正文 → 自评 → 润色」全流程（评分报告 + 润色定稿）</span>
+          </label>
+          <div class="form-actions">
+            <button type="button" id="search-corpus" class="btn btn-ghost">检索范文素材</button>
+            <button type="submit" id="start-gen" class="btn btn-primary">开始生成</button>
+          </div>
+          <p class="hint">生成需 30~120 秒，页面会实时显示各阶段进度。</p>
+        </form>
+
+        <div class="card panel-card">
+          <div class="panel-head">
+            <h2 class="card-title">实时生成面板</h2>
+            <span id="gen-status" class="status muted">待命</span>
+          </div>
+          <div id="timeline" class="timeline"></div>
+          <h3 id="essay-title" class="essay-title"></h3>
+          <div id="essay-body" class="essay-body empty">生成的正文会在这里流式出现。</div>
+          <div id="score-card" class="score-card hidden"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 历史记录 ================= -->
+    <section id="view-history" class="view">
+      <div class="history-grid">
+        <div class="card list-card">
+          <div class="panel-head">
+            <h2 class="card-title">历史记录</h2>
+            <button id="refresh-essays" class="btn btn-ghost btn-sm">刷新</button>
+          </div>
+          <ul id="essay-list" class="essay-list"></ul>
+        </div>
+        <div class="card detail-card">
+          <div id="essay-detail" class="essay-detail empty">选择左侧一条记录查看详情。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 提示词 ================= -->
+    <section id="view-prompts" class="view">
+      <div class="card prompts-card">
+        <h2 class="card-title">提示词策略（Prompting Strategies）</h2>
+        <div id="strategies" class="strategies"></div>
+        <h2 class="card-title mt">核心提示词（按阶段）</h2>
+        <p class="hint">以下为后端真实使用的 system 与 user 模板，可用于实验报告截图。</p>
+        <div id="prompt-stages" class="prompt-stages"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 素材检索抽屉 -->
+  <div id="corpus-drawer" class="drawer">
+    <div class="drawer-head">
+      <h3>范文素材检索</h3>
+      <button id="close-drawer" class="btn btn-ghost btn-sm">关闭</button>
+    </div>
+    <div class="drawer-search">
+      <input id="corpus-query" type="text" placeholder="例如：坚持 理想">
+      <button id="corpus-search-btn" class="btn btn-primary btn-sm">检索</button>
+    </div>
+    <div id="corpus-results" class="corpus-results"></div>
+  </div>
+  <div id="drawer-mask" class="drawer-mask hidden"></div>
+
+  <!-- 登录 / 注册浮层 -->
+  <div id="auth-modal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="auth-title">登录</h3>
+        <button id="close-auth" class="btn btn-ghost btn-sm">×</button>
+      </div>
+      <div class="auth-tabs">
+        <button id="tab-login" class="auth-tab active">登录</button>
+        <button id="tab-register" class="auth-tab">注册</button>
+      </div>
+      <form id="auth-form" autocomplete="off">
+        <label class="field">
+          <span>用户名</span>
+          <input id="auth-username" type="text" minlength="2" maxlength="32" required>
+        </label>
+        <label class="field">
+          <span>密码（至少 6 位）</span>
+          <input id="auth-password" type="password" minlength="6" maxlength="64" required>
+        </label>
+        <label class="field" id="nickname-field">
+          <span>昵称（可选）</span>
+          <input id="auth-nickname" type="text" maxlength="32">
+        </label>
+        <p id="auth-error" class="auth-error"></p>
+        <button type="submit" class="btn btn-primary btn-block">提交</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
