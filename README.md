@@ -237,7 +237,21 @@ unauth essays -> 401 (expected 401)
 
 ---
 
-## 八、实验结论
+## 八、推送到 GitHub
+
+仓库已在本地初始化并完成首次提交（`.env`、`.venv`、`data/app.db` 已被 `.gitignore` 排除，不会泄露 Key）：
+
+```bash
+git remote add origin https://github.com/<你的用户名>/gaokao-essay-agent.git
+git branch -M main
+git push -u origin main
+```
+
+仓库根目录的 `README.md` 就是本文件，GitHub 上会直接渲染下面的全部截图。
+
+---
+
+## 九、实验结论
 
 1. 提示词的质量比模型参数更决定作文的"像不像人写的"：把评分量规、结构范式、负向清单写进提示词后，输出从"正确但平庸"变为"有骨架、有区分度"。
 2. 多阶段流水线显著优于一次成稿：审题、提纲把不确定性提前消化，正文的偏题率明显下降；自评 + 润色能让同一篇作文从 46~48 分档抬到 50 分档。
