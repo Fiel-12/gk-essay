@@ -1,6 +1,6 @@
 """用 Playwright + 本机 Edge 给 README 采集界面截图。
 
-用法： python scripts/shots.py [--url http://127.0.0.1:8321] [--out docs/screenshots] [--skip-gen]
+用法： python scripts/shots.py [--url http://127.0.0.1:8123] [--out docs/screenshots] [--skip-gen]
 前置：服务已启动，且 scripts/seed_demo.py 已经跑过（演示账号 demo / demo123456）。
 """
 from __future__ import annotations
@@ -32,7 +32,7 @@ REQ = "结合材料谈谈你对“守正与创新”的思考；自拟标题，�
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--url", default="http://127.0.0.1:8321")
+    ap.add_argument("--url", default="http://127.0.0.1:8123")
     ap.add_argument("--out", default="docs/screenshots")
     ap.add_argument("--skip-gen", action="store_true")
     args = ap.parse_args()

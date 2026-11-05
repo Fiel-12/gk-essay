@@ -4,7 +4,7 @@
 
 | 班级 | 姓名 | 学号 |
 | --- | --- | --- |
-| 计科2301 | 张三 | 20230101 |
+| 网安243 | 刘经治 | 202401050896 |
 
 系统首页左上角常驻显示上述班级 / 姓名 / 学号（见下方截图）。
 
@@ -93,7 +93,7 @@ copy .env.example .env        # 然后把 OPENAI_API_KEY 填成自己的 DeepSee
 | `OPENAI_MODEL` | 主模型（成篇 / 评分 / 润色） | `deepseek-v4-pro` |
 | `OPENAI_MODEL_FAST` | 快模型（审题 / 提纲） | `deepseek-flash` |
 | `THINKING_STAGES` | 开启"先思考再输出"的阶段，逗号分隔，留空用默认 `angle,critique` | `angle,critique` |
-| `STUDENT_CLASS` / `STUDENT_NAME` / `STUDENT_ID` | 首页展示的身份信息 | `计科2301` / `张三` / `20230101` |
+| `STUDENT_CLASS` / `STUDENT_NAME` / `STUDENT_ID` | 首页展示的身份信息 | `网安243` / `刘经治` / `202401050896` |
 | `SECRET_KEY` | token 签名密钥，部署时务必更换 | 任意长随机串 |
 
 ### 耗时参考（实测，单张显卡无关，纯 API 时延）
@@ -215,13 +215,23 @@ gaokao-essay-agent/
 
 ```
 health: {"status":"ok","model":"deepseek-v4-pro"}
-meta:   {"app_title":"高考满分作文智能应用","student_class":"计科2301",...,"corpus_count":298}
-register OK user_id = 3
+meta: {"app_title":"高考满分作文智能应用","student_class":"网安243","student_name":"刘经治","student_id":"202401050896","model":"deepseek-v4-pro","corpus_count":298}
+register OK user_id = 5
 corpus hits: [('有关理想信念的高考满分作文10篇 #5', 30.07), ...]
-  [   8.1s] STAGE angle    done (662 chars)
-  [  16.6s] STAGE outline  done (609 chars)
-  [ 114.8s] STAGE essay    done (912 chars)
-  [ 125.8s] STAGE critique done (808 chars)
+  [  12.5s] STAGE angle    done (699 chars)
+  [  16.3s] STAGE outline  done (484 chars)
+  [  96.1s] STAGE essay    done (940 chars)
+  [ 103.0s] STAGE critique done (1006 chars)
+  [ 113.7s] STAGE polish   done (1087 chars)
+elapsed: 113.7s
+event counts: {'stage': 10, 'thinking': 22, 'delta': 3075, 'meta': 1, 'saved': 1, 'done': 1}
+title: 根柢既固，新枝乃发
+word_count: 893
+score: 50.0 一类下
+history count: 1
+export md bytes: 7218 | export docx bytes: 5095 (zip magic: True)
+unauth essays -> 401 (expected 401)
+```
   [ 136.5s] STAGE polish   done (991 chars)
 title: 守正为基，创新为翼
 word_count: 831

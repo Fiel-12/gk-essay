@@ -33,7 +33,7 @@ def get(base: str, path: str, token: str | None = None, timeout: int = 30):
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--base", default="http://127.0.0.1:8321")
+    ap.add_argument("--base", default="http://127.0.0.1:8123")
     ap.add_argument("--nogen", action="store_true")
     ap.add_argument("--critique", action="store_true")
     args = ap.parse_args()

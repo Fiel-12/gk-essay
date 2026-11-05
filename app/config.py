@@ -53,9 +53,9 @@ class Settings:
 
     # ---- 站点信息（README/首页要求展示班级姓名学号）----
     app_title: str = field(default_factory=lambda: _env("APP_TITLE", "高考满分作文智能应用"))
-    student_class: str = field(default_factory=lambda: _env("STUDENT_CLASS", "计科2301"))
-    student_name: str = field(default_factory=lambda: _env("STUDENT_NAME", "张三"))
-    student_id: str = field(default_factory=lambda: _env("STUDENT_ID", "20230101"))
+    student_class: str = field(default_factory=lambda: _env("STUDENT_CLASS", "网安243"))
+    student_name: str = field(default_factory=lambda: _env("STUDENT_NAME", "刘经治"))
+    student_id: str = field(default_factory=lambda: _env("STUDENT_ID", "202401050896"))
 
     # ---- 存储 ----
     db_path: str = field(default_factory=lambda: _env("DB_PATH", str(DATA_DIR / "app.db")))

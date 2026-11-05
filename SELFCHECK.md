@@ -27,7 +27,7 @@
 
 ```
 [PASS] health: {"status": "ok", "model": "deepseek-v4-pro"}
-[PASS] meta: 班级=计科2301 姓名=张三 学号=20230101 语料=298
+[PASS] meta: 班级=网安243 姓名=刘经治 学号=202401050896 语料=298
 [PASS] prompts: 阶段=['angle', 'outline', 'essay', 'critique', 'polish'] 策略数=9
 [PASS] auth-required: 未登录访问历史返回 401（期望 401）
 [PASS] corpus: 片段数=298
@@ -37,29 +37,33 @@
 RESULT: ALL PASS
 ```
 
-## 3. 端到端自检（真实调用模型，约 2 分 20 秒）
+## 3. 端到端自检（真实调用模型，约 2 分钟）
 
 ```powershell
-& .\.venv\Scripts\python.exe scripts\smoke_test.py --critique
+& .\.venv\Scripts\python.exe scripts\smoke_test.py --critique --base http://127.0.0.1:8123
 ```
 
 实测摘要：
 
 ```
 health: {"status":"ok","model":"deepseek-v4-pro"}
-meta:   班级=计科2301 姓名=张三 学号=20230101 corpus_count=298
-register OK user_id = 3
+meta: {"app_title":"高考满分作文智能应用","student_class":"网安243","student_name":"刘经治",
+       "student_id":"202401050896","model":"deepseek-v4-pro","corpus_count":298}
+register OK user_id = 5
 corpus hits: [('有关理想信念的高考满分作文10篇 #5', 30.07), ...]
-  [   8.1s] STAGE angle    done (662 chars)
-  [  16.6s] STAGE outline  done (609 chars)
-  [ 114.8s] STAGE essay    done (912 chars)
-  [ 125.8s] STAGE critique done (808 chars)
-  [ 136.5s] STAGE polish   done (991 chars)
-title: 守正为基，创新为翼
-word_count: 831
-score: 50.5 一类下
+  [  12.5s] STAGE angle    done (699 chars)
+  [  16.3s] STAGE outline  done (484 chars)
+  [  96.1s] STAGE essay    done (940 chars)
+  [ 103.0s] STAGE critique done (1006 chars)
+  [ 113.7s] STAGE polish   done (1087 chars)
+event counts: {'stage': 10, 'thinking': 22, 'delta': 3075, 'meta': 1, 'saved': 1, 'done': 1}
+elapsed: 113.7s
+title: 根柢既固，新枝乃发
+word_count: 893
+score: 50.0 一类下
 history count: 1
-export md bytes: 6745 | export docx bytes: 4776 (zip magic: True)
+export md bytes: 7218 | export docx bytes: 5095 (zip magic: True)
+favorite: {'ok': True}
 unauth essays -> 401 (expected 401)
 ```
 

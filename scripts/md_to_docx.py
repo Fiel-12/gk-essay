@@ -251,7 +251,7 @@ def build(md_path: Path, out_path: Path):
         add_inline(p, " ".join(buf))
 
     doc.core_properties.title = "高考满分作文智能应用 - 运行说明书"
-    doc.core_properties.author = "计科2301 张三 20230101"
+    doc.core_properties.author = "网安243 刘经治 202401050896"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     doc.save(str(out_path))
     print(f"written: {out_path} ({out_path.stat().st_size} bytes)")
